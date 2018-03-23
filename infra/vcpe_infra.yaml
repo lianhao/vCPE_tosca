@@ -49,14 +49,14 @@ topology_template:
   substitution_mappings:
     node_type: onap.vcpe_infra
     requirements:
-      - virtual_link: [ Cp_vaaa_public, virtual_link ] # expose as external CP
-      - virtual_link: [ Cp_vaaa_onap_private, virtual_link ] # expose as external CP
-      - virtual_link: [ Cp_vdns_public, virtual_link ]
-      - virtual_link: [ Cp_vdns_onap_private, virtual_link ]
-      - virtual_link: [ Cp_vdhcp_public, virtual_link ]
-      - virtual_link: [ Cp_vdhcp_onap_private, virtual_link ]
-      - virtual_link: [ Cp_vweb_public, virtual_link ]
-      - virtual_link: [ Cp_vweb_onap_private, virtual_link ]
+      virtual_link: [ Cp_vaaa_public, virtual_link ] # expose as external CP
+      virtual_link: [ Cp_vaaa_onap_private, virtual_link ] # expose as external CP
+      virtual_link: [ Cp_vdns_public, virtual_link ]
+      virtual_link: [ Cp_vdns_onap_private, virtual_link ]
+      virtual_link: [ Cp_vdhcp_public, virtual_link ]
+      virtual_link: [ Cp_vdhcp_onap_private, virtual_link ]
+      virtual_link: [ Cp_vweb_public, virtual_link ]
+      virtual_link: [ Cp_vweb_onap_private, virtual_link ]
 
   inputs:
     vcpe_image_name:
@@ -329,7 +329,9 @@ topology_template:
               num_virtual_cpu: 2              
       artifacts:
         sw_image: #TODO need to put glance image name here
-          file: { get_input: vcpe_image_name }
+          #file: { get_input: vcpe_image_name }
+          file: ubuntu_16.04
+          type: tosca.artifacts.nfv.SwImage
       interfaces:
         Standard:
           configure:
@@ -429,7 +431,9 @@ topology_template:
               num_virtual_cpu: 2              
       artifacts:
         sw_image: #TODO need to put glance image name here
-          file: { get_input: vcpe_image_name }
+          #file: { get_input: vcpe_image_name }
+          file: ubuntu_16.04
+          type: tosca.artifacts.nfv.SwImage
       interfaces:
         Standard:
           configure:
@@ -527,7 +531,9 @@ topology_template:
               num_virtual_cpu: 2              
       artifacts:
         sw_image: #TODO need to put glance image name here
-          file: { get_input: vcpe_image_name }
+          #file: { get_input: vcpe_image_name }
+          file: ubuntu_16.04
+          type: tosca.artifacts.nfv.SwImage
       interfaces:
         Standard:
           configure:
@@ -625,7 +631,9 @@ topology_template:
               num_virtual_cpu: 2              
       artifacts:
         sw_image: #TODO need to put glance image name here
-          file: { get_input: vcpe_image_name }
+          #file: { get_input: vcpe_image_name }
+          file: ubuntu_16.04
+          type: tosca.artifacts.nfv.SwImage
       interfaces:
         Standard:
           configure:

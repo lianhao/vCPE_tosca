@@ -49,8 +49,8 @@ topology_template:
   substitution_mappings:
     node_type: onap.vcpe_vgmux
     requirements:
-      - virtual_link: [ Cp_vgmux_public, virtual_link ] # expose as external CP
-      - virtual_link: [ Cp_vgmux_onap_private, virtual_link ] # expose as external CP
+      virtual_link: [ Cp_vgmux_public, virtual_link ] # expose as external CP
+      virtual_link: [ Cp_vgmux_onap_private, virtual_link ] # expose as external CP
 
   inputs:
     vcpe_image_name:
@@ -351,13 +351,15 @@ topology_template:
               virtual_mem_size: 4096 MB
               vdu_memory_requirements:
                 memoryPageSize: 2 MB
-                numberOfPages: 1024
+                numberOfPages: "1024"
             virtual_cpu:
               num_virtual_cpu: 2
               cpu_architecture: generic
       artifacts:
         sw_image: #TODO need to put glance image name here
-          file: { get_input: vcpe_image_name }
+          #file: { get_input: vcpe_image_name }
+          file: ubuntu_16.04
+          type: tosca.artifacts.nfv.SwImage
       interfaces:
         Standard:
           configure:

@@ -58,6 +58,8 @@ capability_types:
         required: false
       compute_requirements:
         type: map
+        entry_schema:
+          type: string
         required: false
       requested_additional_capabilities:
         type: map
@@ -70,7 +72,10 @@ capability_types:
       virtual_cpu:
         type: tosca.datatypes.nfv.VirtualCpu
         required: true
-  
+
+  tosca.capabilities.nfv.VirtualStorage:
+    derived_from: tosca.capabilities.Node
+
   tosca.capabilities.nfv.VirtualLinkable:
     derived_from: tosca.capabilities.Node
   
@@ -148,6 +153,8 @@ data_types:
         required: true
       network_interface_requirements:
         type: map
+        entry_schema:
+          type: string
         required: true
       nic_io_requirements:
         type: tosca.datatypes.nfv.LogicalNodeData
@@ -201,6 +208,8 @@ data_types:
           required: false
         vdu_memory_requirements:
           type: map
+          entry_schema:
+           type: string
           required: false
         numa_enabled:
           type: boolean
@@ -223,6 +232,8 @@ data_types:
         required: false
       vdu_cpu_requirements:
         type: map
+        entry_schema:
+           type: string
         required: false
       virtual_cpu_pinning:
         type: tosca.datatypes.nfv.VirtualCpuPinning
@@ -273,10 +284,7 @@ data_types:
           type: integer
           required: false
   
-  tosca.datatypes.nfv.LocalAffinityOrAntiAffinityRule: # not defined in IFA011 v2.4.1 and SOL001 v.6.0
-      derived_from: tosca.datatypes.Root
-      properties:
-  
+   
   tosca.datatypes.nfv.VlProfile:
       derived_from: tosca.datatypes.Root
       properties:
@@ -295,28 +303,28 @@ data_types:
              type: string
            required: false
         cidr: #Align with ONAP R2 IM. not defined in IFA011 v2.4.1 and SOL001 v.6.0
-           type: String
+           type: string
            required: false
         networkName:  #Align with ONAP R2 IM. not defined in IFA011 v2.4.1 and SOL001 v.6.0
-           type: String
+           type: string
            required: false
         startIp:  #Align with ONAP R2 IM. not defined in IFA011 v2.4.1 and SOL001 v.6.0
-           type: String
+           type: string
            required: false
         endIp:  #Align with ONAP R2 IM. not defined in IFA011 v2.4.1 and SOL001 v.6.0
-           type: String
+           type: string
            required: false
         gatewayIp:  #Align with ONAP R2 IM. not defined in IFA011 v2.4.1 and SOL001 v.6.0
-           type: String
+           type: string
            required: false
         segmentationId:  #Align with ONAP R2 IM. not defined in IFA011 v2.4.1 and SOL001 v.6.0
-           type: Integer
+           type: integer
            required: false
         physicalNetwork:  #Align with ONAP R2 IM. not defined in IFA011 v2.4.1 and SOL001 v.6.0
-           type: String
+           type: string
            required: false
         networkType:  #Align with ONAP R2 IM. not defined in IFA011 v2.4.1 and SOL001 v.6.0
-           type: String
+           type: string
            required: false
            constraints:
              - valid_values: [VLAN, VXLAN]
@@ -361,7 +369,7 @@ data_types:
       scale_to_level: 
         type: tosca.datatypes.nfv.VnfScaleToLevelOperationConfiguration 
       heal: 
-        type: tosca.datatypes.nfv.VnfHealOperationConfiguratin
+        type: tosca.datatypes.nfv.VnfHealOperationConfiguration
       terminate:
         type: tosca.datatypes.nfv.VnfTerminateOperationConfiguration
       operate: 
@@ -369,7 +377,7 @@ data_types:
   
   tosca.datatypes.nfv.VnfInstantiateOperationConfiguration:
       derived_from: tosca.datatypes.Root
-      properties:
+      #properties:
         #parameters:
             #modeled as part of operation parameter list
   
@@ -458,7 +466,9 @@ data_types:
          type: integer #Number [ms]
          required: true
       packet_loss_ratio:
-         type: Scalar #Number [0 ..1]
+         type: float
+         constraints:
+           - in_range: [ 0.0, 1.0 ]
          required: false
   
   tosca.datatypes.nfv.CpProtocolData:
@@ -510,6 +520,8 @@ data_types:
     properties:
       logical_node_requirements:
         type: map # not defined in SOL001 v.6.0
+        entry_schema:
+          type: string
         required: false
 
 #Interface Types
@@ -578,8 +590,6 @@ node_types:
   tosca.nodes.nfv.Vdu.Compute:
     derived_from: tosca.nodes.Root
     properties:
-      #id:
-        # node name
       name:
         type: string
         required: true
@@ -623,20 +633,20 @@ node_types:
         type: tosca.capabilities.nfv.VirtualCompute
       virtual_binding:
         type: tosca.capabilities.nfv.VirtualBindable
-        occurrences: [1, UNBOUND]
+        occurrences: [1, UNBOUNDED]
       monitoring_parameter:
         type: tosca.capabilities.nfv.Metric
-        occurrences: [0,UNBOUND]
+        occurrences: [0, UNBOUNDED]
     requirements:
       - virtual_storage:
           capability: tosca.capabilities.nfv.VirtualStorage
           relationship: tosca.relationships.nfv.Vdu.AttachedTo
-          node: tosca.nodes.nfv.VDU.VirtualStorage
-          occurences: [ 0, UNBOUNDED ]
-    artifacts:
-      - sw_image:
-          file:
-            type: tosca.artifacts.nfv.SwImage
+          node: tosca.nodes.nfv.Vdu.VirtualStorage
+          occurrences: [ 0, UNBOUNDED ]
+    #artifacts:
+    #  - sw_image:
+    #      file:
+    #      type: tosca.artifacts.nfv.SwImage
   
   tosca.nodes.nfv.Vdu.VirtualStorage:
     derived_from: tosca.nodes.Root
@@ -651,6 +661,8 @@ node_types:
         required: true
       vdu_storage_requirements:
         type: map
+        entry_schema:
+          type: string
         required: false
       rdma_enabled:
         type: boolean
@@ -658,10 +670,10 @@ node_types:
     capabilities:
       virtual_storage:
         type: tosca.capabilities.nfv.VirtualStorage
-    artifacts:
-      - sw_image:
-          file:
-          type: tosca.artifacts.Deployment.Image
+    #artifacts:
+    #  - sw_image:
+    #     file:
+    #     type: tosca.artifacts.Deployment.Image
   
   tosca.nodes.nfv.Cp:
     derived_from: tosca.nodes.Root
@@ -690,7 +702,7 @@ node_types:
         type: boolean
         required: true
       allowedAddressData: # Aligned with ONAP R2 Im.not defined in IFA011 v2.4.1 and SOL001 v0.6.0
-        type: tosca.datatype.nfv.AddressData
+        type: tosca.datatypes.nfv.AddressData
         required: false
   
   tosca.nodes.nfv.VduCp:
@@ -700,13 +712,13 @@ node_types:
         type: integer
         required: false
       vnicName: #  Aligned with ONAP R2 Im.not defined in IFA011 v2.4.1 and SOL001 v0.6.0
-        type: String
+        type: string
         required: false
       vnicOrder: # Aligned with ONAP R2 Im. not defined in IFA011 v2.4.1 and SOL001 v0.6.0
         type: integer
         required: false
       vnicType: # Aligned with ONAP R2 Im. not defined in IFA011 v2.4.1 and SOL001 v0.6.0
-        type: String
+        type: string
         constraints:
             - valid_values: [normal, macvtap, direct, baremetal, direct-physical, virtio-forwarder]
         required: false
@@ -770,7 +782,7 @@ node_types:
     capabilities:
       monitoring_parameter:
         type: tosca.capabilities.nfv.Metric
-        occurrences: [0,UNBOUND]
+        occurrences: [0, UNBOUNDED]
       virtual_linkable:
         type: tosca.capabilities.nfv.VirtualLinkable
   
@@ -823,7 +835,7 @@ node_types:
       flavour_description:
         type: string
         required: true
-    capabilities:
+    #capabilities:
       # monitoring_parameter:
         # modelled as ad hoc capabilities in the VNF node template
     requirements:
@@ -846,3 +858,6 @@ relationship_types:
     derived_from: tosca.relationships.DependsOn
     valid_target_types: [ tosca.capabilities.nfv.VirtualLinkable]
 
+  tosca.relationships.nfv.Vdu.AttachedTo:
+    derived_from: tosca.relationships.DependsOn
+    valid_target_types: [ tosca.capabilities.nfv.VirtualStorage]
