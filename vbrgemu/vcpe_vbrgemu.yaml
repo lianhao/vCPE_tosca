@@ -271,7 +271,7 @@ topology_template:
       interfaces:
         Standard:
           configure:
-            implementation: ../artifacts/scripts/vbrgemu_config.sh
+            implementation: artifacts/scripts/vbrgemu_config.sh
             inputs:
               __brgemu_bng_private_net_cidr__: { get_input: vbrgemu_bng_private_net_cidr }
               __repo_url_blob__ : { get_input: repo_url_blob }

@@ -346,7 +346,7 @@ topology_template:
         Standard:
           configure:
             #TODO cloudinit support
-            implementation: ../artifacts/scripts/vgw_config.sh
+            implementation: artifacts/scripts/vgw_config.sh
             inputs:
               __mux_gw_private_net_ipaddr__ : { get_input: vgw_private_ip_0 }
               __oam_ipaddr__ : { get_input: vgw_private_ip_1 }

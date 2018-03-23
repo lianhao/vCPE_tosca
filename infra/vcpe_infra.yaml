@@ -336,7 +336,7 @@ topology_template:
         Standard:
           configure:
             #TODO cloudinit
-            implementation: ../artifacts/scripts/vaaa_config.sh
+            implementation: artifacts/scripts/vaaa_config.sh
             inputs:
               __dcae_collector_ip__: { get_input: dcae_collector_ip } 
               __dcae_collector_port__: { get_input: dcae_collector_port }
@@ -438,7 +438,7 @@ topology_template:
         Standard:
           configure:
             #TODO cloudinit
-            implementation: ../artifacts/scripts/vdns_config.sh
+            implementation: artifacts/scripts/vdns_config.sh
             inputs:
               __oam_ipaddr__ : { get_input: vdns_private_ip_1 }
               __cpe_public_net_ipaddr__: { get_input: vdns_private_ip_0 }
@@ -538,7 +538,7 @@ topology_template:
         Standard:
           configure:
             #TODO cloudinit
-            implementation: ../artifacts/scripts/vdhcp_config.sh
+            implementation: artifacts/scripts/vdhcp_config.sh
             inputs:
               __oam_ipaddr__ : { get_param: vdhcp_private_ip_1 }
               __cpe_signal_ipaddr__ : { get_param: vdhcp_private_ip_0 }
@@ -638,7 +638,7 @@ topology_template:
         Standard:
           configure:
             #TODO cloudinit
-            implementation: ../artifacts/scripts/vweb_config.sh
+            implementation: artifacts/scripts/vweb_config.sh
             inputs:
               __oam_ipaddr__ : { get_param: vweb_private_ip_1 }
               __cpe_public_ipaddr__: { get_param: vweb_private_ip_0 }

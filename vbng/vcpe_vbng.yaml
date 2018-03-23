@@ -391,7 +391,7 @@ topology_template:
         Standard:
           configure:
             #TODO cloudinit support
-            implementation: ../artifacts/scripts/vbng_config.sh
+            implementation: artifacts/scripts/vbng_config.sh
             inputs:
               __oam_ipaddr__: { get_input: vbng_private_ip_1 }
               __brgemu_bng_net_ipaddr__: { get_input: vbng_private_ip_0 }

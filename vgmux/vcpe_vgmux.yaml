@@ -364,7 +364,7 @@ topology_template:
         Standard:
           configure:
             #TODO cloudinit support
-            implementation: ../artifacts/scripts/vgmux_config.sh
+            implementation: artifacts/scripts/vgmux_config.sh
             inputs:
               __mux_to_bng_net_ipaddr__ : { get_input: vgmux_private_ip_0 }
               __oam_ipaddr__ : { get_input: vgmux_private_ip_1 }
