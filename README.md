@@ -5,9 +5,11 @@
 Please run ./generate_csar.sh to create the csar package files for these 5 VNFS. CSAR package file is just a zip file.
 
 ## pending issues to DM
+Please search for "TODO" in the corresponding VNFD to find the pending things.
 - VDU local disk size
 - VDU metadata
 - VDU cloudinit
+- image name in glance for VDU
 
 ## References:
 - [vCPE use case](https://wiki.onap.org/pages/viewpage.action?pageId=3246168)
