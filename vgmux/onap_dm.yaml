@@ -607,18 +607,26 @@ node_types:
           type: string
         required: false
       configurable_properties:
-         type: map
-         entry_schema:
-            type: tosca.datatypes.nfv.VnfcConfigurableProperties
-         required: true 
+        type: map
+        entry_schema:
+           type: tosca.datatypes.nfv.VnfcConfigurableProperties
+        required: true 
       vdu_profile:
-         type: tosca.datatypes.nfv.VduProfile
-         required: true
+        type: tosca.datatypes.nfv.VduProfile
+        required: true
       inject_files: #Aligned with ONAP R2 IM. not defined in IFA011 v2.4.1 and SOL001 v0.6.0
-         type: list
-         entry_schema:
-           type: tosca.datatypes.nfv.injectFile
-         required: false
+        type: list
+        entry_schema:
+          type: tosca.datatypes.nfv.injectFile
+        required: false
+      meta_data: #metadata attached to the VM or container
+        type: map
+        entry_schema:
+          type: string
+        required: false
+      user_data: #cloudinit userdata script support
+        type: string
+        required: false
     #attributes: NOT DEFINED IN ONAP IM and SOL001
       #private_address:
       #  status: deprecated

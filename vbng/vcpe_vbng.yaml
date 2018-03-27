@@ -366,10 +366,36 @@ topology_template:
         inject_files:
           - source_path: artifacts/keys/authorized_keys #SSH authorized_keys
             dest_path: /home/ubuntu/.ssh/authorized_keys
-        #TODO metadata
-        #metadata:
-        #  vnf_id: { get_input: vnf_id }
-        #  vf_module_id: { get_input: vf_module_id }
+        meta_data:
+          vnf_id: { get_input: vnf_id }
+          vf_module_id: { get_input: vf_module_id }
+        user_data: { concat: ["#!/bin/bash\n",
+                              "mkdir /opt/config\n",
+                              "echo \"", {get_input: vbng_private_ip_0}, "\" > /opt/config/brgemu_bng_net_ipaddr.txt\n",
+                              "echo \"", {get_input: vbng_private_ip_2}, "\" > /opt/config/cpe_signal_net_ipaddr.txt\n",
+                              "echo \"", {get_input: vbng_private_ip_3}, "\" > /opt/config/bng_gmux_net_ipaddr.txt\n",
+                              "echo \"", {get_input: vbng_private_ip_1}, "\" > /opt/config/oam_ipaddr.txt\n",
+                              "echo \"", {get_input: onap_private_net_cidr}, "\" > /opt/config/oam_cidr.txt\n",
+                              "echo \"", {get_input: bng_gmux_private_net_cidr}, "\" > /opt/config/bng_gmux_net_cidr.txt\n",
+                              "echo \"", {get_input: cpe_signal_private_net_cidr}, "\" > /opt/config/cpe_signal_net_cidr.txt\n",
+                              "echo \"", {get_input: brgemu_bng_private_net_cidr}, "\" > /opt/config/brgemu_bng_net_cidr.txt\n",
+                              "echo \"", {get_input: dcae_collector_ip}, "\" > /opt/config/dcae_collector_ip.txt\n",
+                              "echo \"", {get_input: dcae_collector_port}, "\" > /opt/config/dcae_collector_port.txt\n",
+                              "echo \"", {get_input: repo_url_blob}, "\" > /opt/config/repo_url_blob.txt\n",
+                              "echo \"", {get_input: repo_url_artifacts}, "\" > /opt/config/repo_url_artifacts.txt\n",
+                              "echo \"", {get_input: demo_artifacts_version}, "\" > /opt/config/demo_artifacts_version.txt\n",
+                              "echo \"", {get_input: install_script_version}, "\" > /opt/config/install_script_version.txt\n",
+                              "echo \"", {get_input: cloud_env}, "\" > /opt/config/cloud_env.txt\n",
+                              "echo \"", {get_input: vpp_source_repo_url}, "\" > /opt/config/vpp_source_repo_url.txt\n",
+                              "echo \"", {get_input: vpp_source_repo_branch}, "\" > /opt/config/vpp_source_repo_branch.txt\n",
+                              "echo \"", {get_input: vpp_patch_url}, "\" > /opt/config/vpp_patch_url.txt\n",
+                              "echo \"", {get_input: sdnc_ip_addr}, "\" > /opt/config/sdnc_ip_addr.txt\n",
+                              "curl -k", {get_input: repo_url_blob}, "/org.onap.demo/vnfs/vcpe/", {get_input: install_script_version}, "/v_bng_install.sh -o /opt/v_bng_install.sh\n",
+                              "cd /opt\n",
+                              "chmod +x v_bng_install.sh\n",
+                              "./v_bng_install.sh\n",
+                             ]
+                   }
       capabilities:
         virtual_compute:
           properties:
@@ -387,28 +413,3 @@ topology_template:
           #file: { get_input: vcpe_image_name }
           file: ubuntu_16.04
           type: tosca.artifacts.nfv.SwImage
-      interfaces:
-        Standard:
-          configure:
-            #TODO cloudinit support
-            implementation: artifacts/scripts/vbng_config.sh
-            inputs:
-              __oam_ipaddr__: { get_input: vbng_private_ip_1 }
-              __brgemu_bng_net_ipaddr__: { get_input: vbng_private_ip_0 }
-              __cpe_signal_net_ipaddr__: { get_input: vbng_private_ip_2 }
-              __bng_gmux_net_ipaddr__: { get_input: vbng_private_ip_3 }
-              __oam_cidr__: { get_input: onap_private_net_cidr }
-              __brgemu_bng_cidr__: { get_input: brgemu_bng_private_net_cidr }
-              __cpe_signal_cidr__: { get_input: cpe_signal_private_net_cidr }
-              __bng_gmux_cidr__: { get_input: bng_gmux_private_net_cidr }
-              __dcae_collector_ip__: { get_input: dcae_collector_ip }
-              __dcae_collector_port__: { get_input: dcae_collector_port }
-              __repo_url_blob__ : { get_input: repo_url_blob }
-              __repo_url_artifacts__ : { get_input: repo_url_artifacts }
-              __demo_artifacts_version__ : { get_input: demo_artifacts_version }
-              __install_script_version__ : { get_input: install_script_version }
-              __cloud_env__ : { get_input: cloud_env }
-              __vpp_source_repo_url__ : { get_input: vpp_source_repo_url }
-              __vpp_source_repo_branch__ : { get_input: vpp_source_repo_branch }
-              __vpp_patch_url__ : { get_input: vpp_patch_url }
-              __sdnc_ip_addr__: { get_input: sdnc_ip_addr }

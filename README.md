@@ -7,8 +7,8 @@ Please run ./generate_csar.sh to create the csar package files for these 5 VNFS.
 ## pending issues to DM
 Please search for "TODO" in the corresponding VNFD to find the pending things.
 - VDU local disk size
-- VDU metadata
-- VDU cloudinit
+- ~~VDU metadata(Done.)~~
+- ~~VDU cloudinit(Done.)~~
 - image name in glance for VDU
 
 ## References:
