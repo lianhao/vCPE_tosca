@@ -1,54 +1,18 @@
 tosca_definitions_version: tosca_simple_yaml_1_0
 #Artifact Types
+#Based on R2 Design-time Resource DM clean version v8
 artifact_types:
   tosca.artifacts.nfv.SwImage:
     derived_from: tosca.artifacts.Deployment.Image
-    properties:
-      #id:
-        # node name
-      name:
-        type: string
-        required: true
-      version:
-        type: string
-        required: true
-      checksum:
-        type: string
-        required: true
-      container_format:
-        type: string
-        required: true
-      disk_format:
-        type: string
-        required: true
-      min_disk:
-        type: scalar-unit.size # Number
-        required: true
-      min_ram:
-        type: scalar-unit.size # Number
-        required: false
-      size:
-        type: scalar-unit.size # Number
-        required: true
-      sw_image:
-        type: string
-        required: true
-      operating_system:
-        type: string
-        required: false
-      supported_virtualisation_environments:
-        type: list
-        entry_schema:
-          type: string
-        required: false
 
 #Capabilities Type
+#Based on R2 Design-time Resource DM clean version v21
 capability_types:
   tosca.capabilities.nfv.VirtualBindable:
-    derived_from: tosca.capabilities.Node
+    derived_from: tosca.capabilities.Root
   
   tosca.capabilities.nfv.Metric:
-    derived_from: tosca.capabilities.Endpoint
+    derived_from: tosca.capabilities.Root
   
   tosca.capabilities.nfv.VirtualCompute:
     derived_from: tosca.capabilities.Root
@@ -74,15 +38,16 @@ capability_types:
         required: true
 
   tosca.capabilities.nfv.VirtualStorage:
-    derived_from: tosca.capabilities.Node
+    derived_from: tosca.capabilities.Root
 
   tosca.capabilities.nfv.VirtualLinkable:
-    derived_from: tosca.capabilities.Node
+    derived_from: tosca.capabilities.Root
   
   tosca.capabilities.nfv.ExtVirtualLinkable:
-    derived_from: tosca.capabilities.Node
+    derived_from: tosca.capabilities.Root
 
 #Data Types
+#Based on R2 Design-time Resource DM clean version v45
 data_types:
   tosca.datatypes.nfv.L2AddressData:
     derived_from: tosca.datatypes.Root
@@ -525,6 +490,7 @@ data_types:
         required: false
 
 #Interface Types
+#Based on R2 Design-time Resource DM clean version v10
 interface_types:
   tosca.interfaces.nfv.vnf.lifecycle.Nfv:
     derived_from: tosca.interfaces.Root
@@ -586,6 +552,7 @@ interface_types:
   #    description: On receiving a VNF indicator value change notification
 
 #Node Types
+#Based on R2 Design-time Resource DM clean version v36
 node_types:
   tosca.nodes.nfv.Vdu.Compute:
     derived_from: tosca.nodes.Root
@@ -663,6 +630,8 @@ node_types:
         # node name
       type_of_storage:
         type: string
+        constraints:
+          - valid_values: [volume, object, root, block]
         required: true
       size_of_storage:
         type: scalar-unit.size
@@ -719,13 +688,13 @@ node_types:
       bitrate_requirement:
         type: integer
         required: false
-      vnicName: #  Aligned with ONAP R2 Im.not defined in IFA011 v2.4.1 and SOL001 v0.6.0
+      vnic_name: #  Aligned with ONAP R2 Im.not defined in IFA011 v2.4.1 and SOL001 v0.6.0
         type: string
         required: false
-      vnicOrder: # Aligned with ONAP R2 Im. not defined in IFA011 v2.4.1 and SOL001 v0.6.0
+      vnic_order: # Aligned with ONAP R2 Im. not defined in IFA011 v2.4.1 and SOL001 v0.6.0
         type: integer
         required: false
-      vnicType: # Aligned with ONAP R2 Im. not defined in IFA011 v2.4.1 and SOL001 v0.6.0
+      vnic_type: # Aligned with ONAP R2 Im. not defined in IFA011 v2.4.1 and SOL001 v0.6.0
         type: string
         constraints:
             - valid_values: [normal, macvtap, direct, baremetal, direct-physical, virtio-forwarder]
@@ -735,11 +704,11 @@ node_types:
         entry_schema:
           type: tosca.datatypes.nfv.VirtualNetworkInterfaceRequirements
         required: false
-      order:
-        type: integer
-        required: false
-        constraints:
-          - greater_or_equal: 0
+      #order:
+      #  type: integer
+      #  required: false
+      #  constraints:
+      #    - greater_or_equal: 0
     requirements:
       - virtual_link:
           capability: tosca.capabilities.nfv.VirtualLinkable
@@ -749,26 +718,6 @@ node_types:
           capability: tosca.capabilities.nfv.VirtualBindable
           relationship: tosca.relationships.nfv.VirtualBindsTo
           node: tosca.nodes.nfv.Vdu.Compute
-  
-  tosca.nodes.nfv.VnfExtCp:
-    derived_from: tosca.nodes.nfv.Cp
-    properties:
-      virtual_network_interface_requirements:
-        type: list
-        entry_schema:
-          type: tosca.datatypes.nfv.VirtualNetworkInterfaceRequirements
-        required: false
-    requirements:
-      - external_virtual_link:
-          capability: tosca.capabilities.nfv.VirtualLinkable
-          relationship: tosca.relationships.nfv.VirtualLinksTo
-          node: tosca.nodes.nfv.VnfVirtualLink
-      - internal_virtual_link: #name in ETSI NFV IFA011 v0.7.3 intVirtualLinkDesc
-          capability: tosca.capabilities.nfv.VirtualLinkable
-          relationship: tosca.relationships.nfv.VirtualLinksTo
-          node: tosca.nodes.nfv.VnfVirtualLink
-          occurrences: [ 0, 1 ] # 0 if re-exposing a VduCp
-                                # 1 if connecting to an internal VL
   
   tosca.nodes.nfv.VnfVirtualLink:
     derived_from: tosca.nodes.Root
@@ -857,6 +806,7 @@ node_types:
         type: tosca.interfaces.nfv.vnf.lifecycle.Nfv
 
 #Relationship Types
+#Based on R2 Design-time Resource DM clean version v4
 relationship_types:
   tosca.relationships.nfv.VirtualBindsTo:
     derived_from: tosca.relationships.DependsOn

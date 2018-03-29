@@ -233,6 +233,13 @@ topology_template:
         - virtual_binding: VDU_vbrgemu_0
         - virtual_link: VL_vbrgemu_bng_private_net
 
+    VirtualStorage_root_all:
+      # this indicate the VDU root storage size 
+      type: tosca.nodes.nfv.Vdu.VirtualStorage
+      properties:
+        type_of_storage: root
+        size_of_storage: 40 GB
+
     VDU_vbrgemu_0:
       type: tosca.nodes.nfv.Vdu.Compute
       properties:
@@ -283,6 +290,8 @@ topology_template:
             virtual_cpu:
               num_virtual_cpu: 2
               cpu_architecture: generic
+      requirements:
+        - virtual_storage: VirtualStorage_root_all
       artifacts:
         sw_image: #TODO need to put glance image name here
           #file: { get_input: vcpe_image_name }
