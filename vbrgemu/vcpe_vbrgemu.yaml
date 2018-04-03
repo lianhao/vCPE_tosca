@@ -226,6 +226,7 @@ topology_template:
         virtual_network_interface_requirements:
           - name: dpdk support
             support_mandatory: true
+            # TODO HPA
             network_interface_requirements:
               #dataProcessingAccelerationLibrary: dpdk_2.2
               interfaceType: virtio
@@ -281,9 +282,9 @@ topology_template:
       capabilities:
         virtual_compute:
           properties:
-            #TODO add local disk size
             virtual_memory:
               virtual_mem_size: 4096 MB
+              # TODO HPA
               vdu_memory_requirements:
                 memoryPageSize: 2 MB
                 numberOfPages: "1024"

@@ -116,6 +116,7 @@ data_types:
       support_mandatory:
         type: boolean
         required: true
+      #TODO HPA
       network_interface_requirements:
         type: map
         entry_schema:
@@ -171,6 +172,7 @@ data_types:
         virtual_mem_oversubscription_policy:
           type: string
           required: false
+        #TODO HPA
         vdu_memory_requirements:
           type: map
           entry_schema:
@@ -195,6 +197,7 @@ data_types:
       virtual_cpu_oversubscription_policy:
         type: string
         required: false
+      #TODO HPA
       vdu_cpu_requirements:
         type: map
         entry_schema:
@@ -483,6 +486,7 @@ data_types:
   tosca.datatypes.nfv.LogicalNodeData:
     derived_from: tosca.datatypes.Root
     properties:
+      #TODO HPA
       logical_node_requirements:
         type: map # not defined in SOL001 v.6.0
         entry_schema:
@@ -636,6 +640,7 @@ node_types:
       size_of_storage:
         type: scalar-unit.size
         required: true
+      #TODO HPA
       vdu_storage_requirements:
         type: map
         entry_schema:
