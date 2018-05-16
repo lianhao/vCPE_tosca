@@ -8,7 +8,7 @@ DIRS="infra vbrgemu vbng vgmux vgw"
 
 for dir in $DIRS; do
     cd $ROOT_DIR/$dir
-    zip -r $ROOT_DIR/$dir/$dir.csar artifacts/ TOSCA-Metadata/ onap_dm.yaml $PREFIX$dir.yaml ubuntu_16.04
+    zip -r $ROOT_DIR/$dir/$dir.csar Artifacts/ TOSCA-Metadata/ Definitions/ MainServiceTemplate.mf MainServiceTemplate.yaml
     rm -f $DEST/$dir.csar
     mv $ROOT_DIR/$dir/$dir.csar $DEST/
 done
