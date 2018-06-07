@@ -586,9 +586,10 @@ node_types:
         type: tosca.datatypes.nfv.VduProfile
         required: true
       inject_files: #Aligned with ONAP R2 IM. not defined in IFA011 v2.4.1 and SOL001 v0.6.0
-        type: list
-        entry_schema:
-          type: tosca.datatypes.nfv.injectFile
+        #type: list
+        #entry_schema:
+        #TODO workaround of SDC bug
+        type: tosca.datatypes.nfv.injectFile
         required: false
       meta_data: #metadata attached to the VM or container
         type: map

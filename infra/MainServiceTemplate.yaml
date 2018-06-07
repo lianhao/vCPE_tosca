@@ -46,29 +46,29 @@ node_types:
         default: ['gvnfm']
 
 topology_template:
-  substitution_mappings:
-    node_type: onap.vcpe_infra
-    requirements:
-      virtual_link: [ Cp_vaaa_public, virtual_link ] # expose as external CP
-      virtual_link: [ Cp_vaaa_onap_private, virtual_link ] # expose as external CP
-      virtual_link: [ Cp_vdns_public, virtual_link ]
-      virtual_link: [ Cp_vdns_onap_private, virtual_link ]
-      virtual_link: [ Cp_vdhcp_public, virtual_link ]
-      virtual_link: [ Cp_vdhcp_onap_private, virtual_link ]
-      virtual_link: [ Cp_vweb_public, virtual_link ]
-      virtual_link: [ Cp_vweb_onap_private, virtual_link ]
+#  substitution_mappings:
+#    node_type: onap.vcpe_infra
+#    requirements:
+#      virtual_link: [ Cp_vaaa_public, virtual_link ] # expose as external CP
+#      virtual_link: [ Cp_vaaa_onap_private, virtual_link ] # expose as external CP
+#      virtual_link: [ Cp_vdns_public, virtual_link ]
+#      virtual_link: [ Cp_vdns_onap_private, virtual_link ]
+#      virtual_link: [ Cp_vdhcp_public, virtual_link ]
+#      virtual_link: [ Cp_vdhcp_onap_private, virtual_link ]
+#      virtual_link: [ Cp_vweb_public, virtual_link ]
+#      virtual_link: [ Cp_vweb_onap_private, virtual_link ]
 
   inputs:
     vcpe_image_name:
       type: string
       description: image name for vcpe in openstack glance
       default: ubuntu_16.04
-    #public_net_id:
-    #  type: string
-    #  description: public network id used during onap installation
-    #onap_private_net_id:
-    #  type: string
-    #  description: onap OAM network id
+    public_net_id:
+      type: string
+      description: public network id used during onap installation
+    onap_private_net_id:
+      type: string
+      description: onap OAM network id
     onap_private_net_cidr:
       type: string
       description: oanp OAM network cidr
@@ -184,35 +184,35 @@ topology_template:
     
   node_templates:
     #onap public net
-    #VL_public:
-    #  type: tosca.nodes.nfv.VnfVirtualLink
-    #  properties:
-    #    connectivity_type:
-    #      layer_protocol: ipv4
-    #    vl_profile:
-    #      max_bit_rate_requirements:
-    #        root: 10000000
-    #        leaf: 10000000
-    #      min_bit_rate_requirements:
-    #        root: 10000000
-    #        leaf: 10000000
-    #      networkName: { get_input: public_net_id }
+    VL_public:
+      type: tosca.nodes.nfv.VnfVirtualLink
+      properties:
+        connectivity_type:
+          layer_protocol: ipv4
+        vl_profile:
+          max_bit_rate_requirements:
+            root: 10000000
+            leaf: 10000000
+          min_bit_rate_requirements:
+            root: 10000000
+            leaf: 10000000
+          networkName: { get_input: public_net_id }
 
     #onap oam net
-    #VL_onap_private:
-    #  type: tosca.nodes.nfv.VnfVirtualLink
-    #  properties:
-    #    connectivity_type:
-    #      layer_protocol: ipv4
-    #    vl_profile:
-    #      max_bit_rate_requirements:
-    #        root: 10000000
-    #        leaf: 10000000
-    #      min_bit_rate_requirements:
-    #        root: 10000000
-    #        leaf: 10000000
-    #      networkName: { get_input: onap_private_net_id }
-    #      cidr: { get_input: onap_private_net_cidr }
+    VL_onap_private:
+      type: tosca.nodes.nfv.VnfVirtualLink
+      properties:
+        connectivity_type:
+          layer_protocol: ipv4
+        vl_profile:
+          max_bit_rate_requirements:
+            root: 10000000
+            leaf: 10000000
+          min_bit_rate_requirements:
+            root: 10000000
+            leaf: 10000000
+          networkName: { get_input: onap_private_net_id }
+          cidr: { get_input: onap_private_net_cidr }
 
     #cpe signal network
     VL_cpe_signal:
@@ -263,7 +263,7 @@ topology_template:
                 floating_ip_activated: false
       requirements:
         - virtual_binding: VDU_vaaa_0
-        #- virtual_link: VL_public
+        - virtual_link: VL_public
 
     Cp_vaaa_onap_private:
       type: tosca.nodes.nfv.VduCp
@@ -281,7 +281,7 @@ topology_template:
                   - { get_input: vaaa_private_ip_1 }
       requirements:
         - virtual_binding: VDU_vaaa_0
-        #- virtual_link: VL_onap_private
+        - virtual_link: VL_onap_private
 
     Cp_vaaa_cpe_signal:
       type: tosca.nodes.nfv.VduCp
@@ -319,9 +319,9 @@ topology_template:
           min_number_of_instances: 1
           max_number_of_instances: 1
           watchdog: none
-        inject_files:
-          - source_path: ../Artifacts/keys/authorized_keys #SSH authorized_keys
-            dest_path: /home/ubuntu/.ssh/authorized_keys
+        inject_files: #TODO SDC Bug
+          source_path: ../Artifacts/keys/authorized_keys #SSH authorized_keys
+          dest_path: /home/ubuntu/.ssh/authorized_keys
         meta_data:
           vnf_id: { get_input: vnf_id }
           vf_module_id: { get_input: vf_module_id }
@@ -375,7 +375,7 @@ topology_template:
                 floating_ip_activated: false
       requirements:
         - virtual_binding: VDU_vdns_0
-        #- virtual_link: VL_public
+        - virtual_link: VL_public
 
     Cp_vdns_onap_private:
       type: tosca.nodes.nfv.VduCp
@@ -424,9 +424,9 @@ topology_template:
           min_number_of_instances: 1
           max_number_of_instances: 1
           watchdog: none
-        inject_files:
-          - source_path: ../Artifacts/keys/authorized_keys #SSH authorized_keys
-            dest_path: /home/ubuntu/.ssh/authorized_keys
+        inject_files: # TODO SDC Bug
+          source_path: ../Artifacts/keys/authorized_keys #SSH authorized_keys
+          dest_path: /home/ubuntu/.ssh/authorized_keys
         meta_data:
           vnf_id: { get_input: vnf_id }
           vf_module_id: { get_input: vf_module_id }
@@ -480,7 +480,7 @@ topology_template:
                 floating_ip_activated: false
       requirements:
         - virtual_binding: VDU_vdhcp_0
-        #- virtual_link: VL_public
+        - virtual_link: VL_public
 
     Cp_vdhcp_onap_private:
       type: tosca.nodes.nfv.VduCp
@@ -498,7 +498,7 @@ topology_template:
                   - { get_input: vdhcp_private_ip_1 }
       requirements:
         - virtual_binding: VDU_vdhcp_0
-        #- virtual_link: VL_onap_private
+        - virtual_link: VL_onap_private
 
     Cp_vdhcp_cpe_signal:
       type: tosca.nodes.nfv.VduCp
@@ -529,9 +529,9 @@ topology_template:
           min_number_of_instances: 1
           max_number_of_instances: 1
           watchdog: none
-        inject_files:
-          - source_path: ../Artifacts/keys/authorized_keys #SSH authorized_keys
-            dest_path: /home/ubuntu/.ssh/authorized_keys
+        inject_files: #SDC Bug
+          source_path: ../Artifacts/keys/authorized_keys #SSH authorized_keys
+          dest_path: /home/ubuntu/.ssh/authorized_keys
         meta_data:
           vnf_id: { get_input: vnf_id }
           vf_module_id: { get_input: vf_module_id }
@@ -584,7 +584,7 @@ topology_template:
                 floating_ip_activated: false
       requirements:
         - virtual_binding: VDU_vweb_0
-        #- virtual_link: VL_public
+        - virtual_link: VL_public
 
     Cp_vweb_onap_private:
       type: tosca.nodes.nfv.VduCp
@@ -602,7 +602,7 @@ topology_template:
                   - { get_input: vweb_private_ip_1 }
       requirements:
         - virtual_binding: VDU_vweb_0
-        #- virtual_link: VL_onap_private
+        - virtual_link: VL_onap_private
 
     Cp_vweb_cpe_public:
       type: tosca.nodes.nfv.VduCp
@@ -633,9 +633,9 @@ topology_template:
           min_number_of_instances: 1
           max_number_of_instances: 1
           watchdog: none
-        inject_files:
-          - source_path: ../Artifacts/keys/authorized_keys #SSH authorized_keys
-            dest_path: /home/ubuntu/.ssh/authorized_keys
+        inject_files: # TODO SDC bug
+          source_path: ../Artifacts/keys/authorized_keys #SSH authorized_keys
+          dest_path: /home/ubuntu/.ssh/authorized_keys
         meta_data:
           vnf_id: { get_input: vnf_id }
           vf_module_id: { get_input: vf_module_id }

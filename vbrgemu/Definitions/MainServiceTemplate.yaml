@@ -46,22 +46,22 @@ node_types:
         default: ['gvnfm']
 
 topology_template:
-  substitution_mappings:
-    node_type: onap.vcpe_vbrgemu
-    requirements:
-      virtual_link: [ Cp_vbrgemu_public, virtual_link ] # expose as external CP
+#  substitution_mappings:
+#    node_type: onap.vcpe_vbrgemu
+#    requirements:
+#      virtual_link: [ Cp_vbrgemu_public, virtual_link ] # expose as external CP
 
   inputs:
     vcpe_image_name:
       type: string
       description: image name for vcpe in openstack glance
       default: ubuntu_16.04
-    #public_net_id:
-    #  type: string
-    #  description: public network id used during onap installation
-    #onap_private_net_id:
-    #  type: string
-    #  description: onap OAM network id
+    public_net_id:
+      type: string
+      description: public network id used during onap installation
+    onap_private_net_id:
+      type: string
+      description: onap OAM network id
     onap_private_net_cidr:
       type: string
       description: oanp OAM network cidr
@@ -145,35 +145,35 @@ topology_template:
 
   node_templates:
     #onap public net
-    #VL_public:
-    #  type: tosca.nodes.nfv.VnfVirtualLink
-    #  properties:
-    #    connectivity_type:
-    #      layer_protocol: ipv4
-    #    vl_profile:
-    #      max_bit_rate_requirements:
-    #        root: 10000000
-    #        leaf: 10000000
-    #      min_bit_rate_requirements:
-    #        root: 10000000
-    #        leaf: 10000000
-    #      networkName: { get_input: public_net_id }
+    VL_public:
+      type: tosca.nodes.nfv.VnfVirtualLink
+      properties:
+        connectivity_type:
+          layer_protocol: ipv4
+        vl_profile:
+          max_bit_rate_requirements:
+            root: 10000000
+            leaf: 10000000
+          min_bit_rate_requirements:
+            root: 10000000
+            leaf: 10000000
+          networkName: { get_input: public_net_id }
 
     #onap oam net
-    #VL_onap_private:
-    #  type: tosca.nodes.nfv.VnfVirtualLink
-    #  properties:
-    #    connectivity_type:
-    #      layer_protocol: ipv4
-    #    vl_profile:
-    #      max_bit_rate_requirements:
-    #        root: 10000000
-    #        leaf: 10000000
-    #      min_bit_rate_requirements:
-    #        root: 10000000
-    #        leaf: 10000000
-    #      networkName: { get_input: onap_private_net_id }
-    #      cidr: { get_input: onap_private_net_cidr }
+    VL_onap_private:
+      type: tosca.nodes.nfv.VnfVirtualLink
+      properties:
+        connectivity_type:
+          layer_protocol: ipv4
+        vl_profile:
+          max_bit_rate_requirements:
+            root: 10000000
+            leaf: 10000000
+          min_bit_rate_requirements:
+            root: 10000000
+            leaf: 10000000
+          networkName: { get_input: onap_private_net_id }
+          cidr: { get_input: onap_private_net_cidr }
 
     #Private network that connects vBRGEMU to vBNG
     VL_vbrgemu_bng_private_net:
@@ -207,7 +207,7 @@ topology_template:
                 floating_ip_activated: false
       requirements:
         - virtual_binding: VDU_vbrgemu_0
-        #- virtual_link: VL_public
+        - virtual_link: VL_public
 
     Cp_vbrgemu_vbrgemu_bng_private_net:
       type: tosca.nodes.nfv.VduCp
@@ -252,9 +252,9 @@ topology_template:
           min_number_of_instances: 1
           max_number_of_instances: 1
           watchdog: none
-        inject_files:
-          - source_path: ../Artifacts/keys/authorized_keys #SSH authorized_keys
-            dest_path: /home/ubuntu/.ssh/authorized_keys
+        inject_files: #TODO SDC bug
+          source_path: ../Artifacts/keys/authorized_keys #SSH authorized_keys
+          dest_path: /home/ubuntu/.ssh/authorized_keys
         meta_data:
           vnf_id: { get_input: vnf_id }
           vf_module_id: { get_input: vf_module_id }
