@@ -166,35 +166,35 @@ topology_template:
 
   node_templates:
     #onap public net
-    VL_public:
-      type: tosca.nodes.nfv.VnfVirtualLink
-      properties:
-        connectivity_type:
-          layer_protocol: ipv4
-        vl_profile:
-          max_bit_rate_requirements:
-            root: 10000000
-            leaf: 10000000
-          min_bit_rate_requirements:
-            root: 10000000
-            leaf: 10000000
-          networkName: { get_input: public_net_id }
-
-    #onap oam net
-    VL_onap_private:
-      type: tosca.nodes.nfv.VnfVirtualLink
-      properties:
-        connectivity_type:
-          layer_protocol: ipv4
-        vl_profile:
-          max_bit_rate_requirements:
-            root: 10000000
-            leaf: 10000000
-          min_bit_rate_requirements:
-            root: 10000000
-            leaf: 10000000
-          networkName: { get_input: onap_private_net_id }
-          cidr: { get_input: onap_private_net_cidr }
+#    VL_public:
+#      type: tosca.nodes.nfv.VnfVirtualLink
+#      properties:
+#        connectivity_type:
+#          layer_protocol: ipv4
+#        vl_profile:
+#          max_bit_rate_requirements:
+#            root: 10000000
+#            leaf: 10000000
+#          min_bit_rate_requirements:
+#            root: 10000000
+#            leaf: 10000000
+#          networkName: { get_input: public_net_id }
+#
+#    #onap oam net
+#    VL_onap_private:
+#      type: tosca.nodes.nfv.VnfVirtualLink
+#      properties:
+#        connectivity_type:
+#          layer_protocol: ipv4
+#        vl_profile:
+#          max_bit_rate_requirements:
+#            root: 10000000
+#            leaf: 10000000
+#          min_bit_rate_requirements:
+#            root: 10000000
+#            leaf: 10000000
+#          networkName: { get_input: onap_private_net_id }
+#          cidr: { get_input: onap_private_net_cidr }
 
     #Private network that connects vGMUX to vGWs
     VL_mux_gw_private_net:
@@ -245,7 +245,7 @@ topology_template:
                 floating_ip_activated: false
       requirements:
         - virtual_binding: VDU_vgw_0
-        - virtual_link: VL_public
+        #- virtual_link: VL_public
 
     Cp_vgw_onap_private:
       type: tosca.nodes.nfv.VduCp
@@ -263,7 +263,7 @@ topology_template:
                   - { get_input: vgw_private_ip_1 }
       requirements:
         - virtual_binding: VDU_vgw_0
-        - virtual_link: VL_onap_private
+        #- virtual_link: VL_onap_private
 
     Cp_vgw_mux_gw_private_net:
       type: tosca.nodes.nfv.VduCp
