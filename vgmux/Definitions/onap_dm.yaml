@@ -539,7 +539,7 @@ interface_types:
     heal_start:
       description: Invoked before heal
     heal_end:
-    description: Invoked after heal
+      description: Invoked after heal
     scale:
       description: Invoked upon receipt of a Scale VNF request
     scale_start:
